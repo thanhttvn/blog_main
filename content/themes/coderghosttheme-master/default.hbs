@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{! Document Settings }}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    {{! Page Meta }}
+    <title>
+    {{meta_title}}{{#is "post"}} | {{@blog.title}}{{/is}}
+    </title>
+
+    {{! Page Meta }}
+    {{{block "meta"}}}
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="{{asset "favicon.ico"}}">
+
+    {{! Styles'n'Scripts }}
+    <!--<link rel="stylesheet" type="text/css" href="{{asset "css/screen.css"}}" />-->
+
+    {{! Added Bootstrap }}
+    <link rel="stylesheet" href="{{asset "css/bootstrap.min.css"}}"/>
+    <link rel="stylesheet" href="{{asset "css/monokai_sublime.css"}}">
+    <link rel="stylesheet" href="{{asset "css/default.css"}}">
+    <link rel="stylesheet" href="{{asset "css/elusive-icons.min.css"}}">
+
+    {{! Ghost outputs important style and meta data with this tag }}
+    {{ghost_head}}
+
+    <!-- Google Analytics -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108925357-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-108925357-1');
+    </script>
+
+    <script type="text/javascript" src="{{asset "js/jquery.js"}}"></script>
+
+    <!-- 2017-12-14 add lib vide for display background video -->
+    <script type="text/javascript" src="{{asset "js/jquery.vide.min.js"}}"></script>
+
+    {{! Add all code style here }}
+    <!--<link rel="stylesheet" href="{{asset "css/default.css"}}">-->
+
+    <script src="{{asset "js/highlight.pack.js"}}"></script>
+
+  {{! Page Highlight }}
+  {{{block "initHighlight"}}}
+
+<script>
+
+</script>
+</head>
+<body>
+{{#is "home"}}
+    {{#if @blog.cover_image}}
+    <!--<div style="width: auto; height: 100vh;"
+  data-vide-bg="video/vietnam.mp4" data-vide-options="loop: true, muted: false, position: 0% 0%">
+</div>-->
+{{!Comment 20171214 for display video}}
+<div style="background:url({{@blog.cover_image}}) no-repeat center center; height: 65vh;" class="cover cover-border hidden-sm hidden-xs">
+</div>
+{{/if}}
+{{/is}}
+<div class="container">
+<div class="row">
+<div class="col-md-2 hidden-sm hidden-xs">
+{{> "navbar"}}
+</div>
+<div class="col-md-10 col-xs-12">
+    {{{body}}}
+</div>
+    {{#if @labs.subscribers}}
+        <div class="col-md-10 hidden-xs hidden-sm">
+            <div class="subscribe-form">
+                {{subscribe_form}}
+            </div>
+        </div>
+
+    {{/if}}
+
+</div>
+</div>
+
+    <footer class="page-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6">
+          <i class="el el-stop footer-icon"></i>
+            &copy; {{date format="YYYY"}} <a href="{{@blog.url}}">{{@blog.title}}</a> All rights reserved.<br>
+          </div>
+          <div class="col-xs-6 text-right hidden-sm hidden-xs">Proudly published with <a href="https://ghost.org">Ghost</a></div>
+        </div>
+      </div>
+    </footer>
+
+    <a href="#" class="back-to-top"><span class="fa fa-angle-up fa-2x"></span></a>
+
+    {{! Ghost outputs important scripts and data with this tag }}
+    {{ghost_foot}}
+
+    {{! The main JavaScript file for Casper }}
+    <script src="{{asset "js/modernizr.js"}}"></script>
+    <script type="text/javascript" src="{{asset "js/index.js"}}"></script>
+    <script type="text/javascript" async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [["$", "$"], ["\\(", "\\)"]],
+            processEscapes: true
+        }
+    });
+    </script>
+    <!-- <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script> -->
+</body>
+</html>

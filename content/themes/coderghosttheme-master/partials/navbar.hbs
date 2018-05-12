@@ -1,0 +1,42 @@
+
+{{#if @blog.logo}}
+    <div class="logo">
+<a class="blog-logo" href="{{@blog.url}}">
+        <img class="blog-logo-image" src="{{@blog.logo}}" alt="Blog Logo"/>
+</a>
+    </div>
+{{/if}}
+
+
+<h5>{{@blog.title}}</h5>
+<hr>
+<ul class="list-unstyled menu">
+    <li>
+        <a href="https://github.com/thanhttvn" target="_blank">
+         <i class="el el-github"></i> GitHub
+        </a>
+    </li>
+
+    {{#if @blog.facebook}}
+        <li>
+            <a href="https://www.facebook.com/groups/codetudau" target="_blank">
+                <i class="el el-facebook"></i> Facebook
+            </a>
+        </li>
+    {{/if}}
+
+    {{#if @blog.twitter}}
+        <li>
+            <a href="{{twitter_url}}" target="_blank">
+                <i class="el el-twitter"></i> {{@blog.twitter}}
+            </a>
+        </li>
+    {{/if}}
+
+    <li>
+        <a href="skype:thanhtt.vn93?add" target="_blank">
+            <i class="el el-skype"></i> thanhtt.vn93
+        </a>
+
+    </li>
+</ul>

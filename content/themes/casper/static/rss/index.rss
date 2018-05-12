@@ -1,0 +1,815 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" version="2.0"><channel><title>Code từ đâu - Code từ đầu</title><description>下を向いていたら、虹を見つけることは出来ないよ。（チャップリン）</description><link>http://codetudau.com/</link><image><url>http://codetudau.com/favicon.png</url><title>Code từ đâu - Code từ đầu</title><link>http://codetudau.com/</link></image><generator>Ghost 1.7</generator><lastBuildDate>Sun, 03 Sep 2017 09:50:47 GMT</lastBuildDate><atom:link href="http://codetudau.com/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title>Phân tích cây quyết định với scikit-learn</title><description>&lt;div class="kg-card-markdown"&gt;&lt;p&gt;Phân tích cây quyết định (Decision Tree Analysis)&lt;br&gt;
+Cây quyết định là một phương pháp phổ biến trong việc khai phá dữ liệu. Cây quyết định là mô hình hỗ trợ ra quyết định dựa trên đồ thị các điều kiện. Tại mỗi nút, ta sẽ đối chiếu các điều&lt;/p&gt;&lt;/div&gt;</description><link>http://codetudau.com/phan-tich-cay-quyet-dinh-voi-scikit-learn/</link><guid isPermaLink="false">59a97465609cd75893eb84c1</guid><category>BIG DATA</category><category>python</category><category>scikit-learn</category><category>Decision Tree</category><dc:creator>T.T.T</dc:creator><pubDate>Sun, 03 Sep 2017 09:11:37 GMT</pubDate><content:encoded>&lt;div class="kg-card-markdown"&gt;&lt;p&gt;Phân tích cây quyết định (Decision Tree Analysis)&lt;br&gt;
+Cây quyết định là một phương pháp phổ biến trong việc khai phá dữ liệu. Cây quyết định là mô hình hỗ trợ ra quyết định dựa trên đồ thị các điều kiện. Tại mỗi nút, ta sẽ đối chiếu các điều kiện thực tế để quyết định rẽ nhánh nào. Nút lá là quyết định cuối cùng.&lt;/p&gt;
+&lt;p&gt;Trong họ hàng nhà cây quyết định có 2 loại:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cây hồi quy (&lt;code&gt;Regression tree&lt;/code&gt;) ước lượng các hàm giá có giá trị là số thực thay vì được sử dụng cho các nhiệm vụ phân loại. (ví dụ: ước tính giá một ngôi nhà hoặc khoảng thời gian một bệnh nhân nằm viện)&lt;/li&gt;
+&lt;li&gt;Cây phân loại (&lt;code&gt;Classification tree&lt;/code&gt;), phân loại như: giới tính (nam hay nữ), kết quả của một trận đấu (thắng hay thua).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Vậy nó có ưu điểm gì không ?&lt;/p&gt;
+&lt;h1 id="uimcavicphntchcyquytnh"&gt;Ưu điểm của việc phân tích cây quyết định&lt;/h1&gt;
+&lt;p&gt;So với các các phân tích dữ liệu khác thì việc sử dụng cây quyết định có các ưu điểm như sau:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Học những đặc trưng từ data đầu vào, đầu ra là kết quả với hình dạng cây quyết định. Nghĩa là dễ dàng nhìn thấy đặc trưng của data đầu vào.&lt;/li&gt;
+&lt;li&gt;Các loại phương pháp khác cần công việc tiền xử lý rất nhiều, còn với cây quyết định thì hầu như là không cần công đoạn tiền xử lý.&lt;/li&gt;
+&lt;li&gt;Với các loại phân tích như Neural Network được coi như kiểu model hộp đen (nói đơn giản là bạn không hiểu trong hộp có gì, xử lý ra sao) thì Decision Tree giống như model hộp trắng.&lt;/li&gt;
+&lt;li&gt;Hỗ trợ đánh giá độ chính xác của các model được tạo ra. Ở đây các model chính là các cây quyết định được tạo trong quá trình xử lý theo phương pháp này.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id="thuttoncyquytnh"&gt;Thuật toán cây quyết định&lt;/h1&gt;
+&lt;p&gt;Để phân tích cây quyết định thì có khá nhiều phương pháp, sự khác nhau như sau:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ID3&lt;br&gt;
+ID3 (Iterative Dichotomiser 3) được phát triển vào nào 1986 bởi Ross Quinlan. Sử dụng lượng thông tin ứng với biến số phân loại sau đó dùng kỹ thuật tham lam ( = lựa chọn tối ưu địa phương ở mỗi bước đi với hy vọng tìm được tối ưu toàn cục )&lt;br&gt;
+Ví dụ như thuật toán tìm đường đi ngắn nhất của Dijkstra&lt;/li&gt;
+&lt;li&gt;C4.5&lt;br&gt;
+Được phát triển từ ID3. C4.5 là thuật toán phân lớp dữ liệu dựa trên cây quyết định hiệu quả và phổ biến trong những ứng dụng khai phá cơ sở dữ liệu có kích thước nhỏ.&lt;br&gt;
+So với ID3, C4.5 không cần biến số phân loại lượng đặc trưng. Output theo dạng if-then, không hiển thị những phần cành không cần thiết.&lt;/li&gt;
+&lt;li&gt;C5.0&lt;br&gt;
+Là bản cải tiến của C4.5. Giúp cải thiện vấn đề hiệu năng và sử dụng ít bộ nhớ hơn.&lt;/li&gt;
+&lt;li&gt;CART&lt;br&gt;
+CART (Classification and Regression Trees) khá giống với C4.5. Được phát triển bởi Breiman năm 1984. Tạo cây phân tích dựa trên biến phân loại, giải thích, mục đính và hồi quy. Và scikit-learn có chứa phiên bản tối ưu hoá của CART.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id="tocyquytnhtrnscikitlearn"&gt;Tạo cây quyết định trên scikit-learn&lt;/h1&gt;
+&lt;p&gt;Tạo ra mô hình cây quyết định dựa trên dữ liệu thực tế, sau đó tiến hành đánh giá các mô hình đó. Trên python, nếu sử dụng scikit-learn thì công việc rất dễ dàng bằng việc sử dụng class sklearn.tree.DecisionTreeClassifier&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;sklearn.tree.DecisionTreeClassifier(criterion='gini',
+  splitter='best', max_depth=None, min_samples_split=2,
+  min_samples_leaf=1, min_weight_fraction_leaf=0.0,
+  max_features=None, random_state=None,
+  max_leaf_nodes=None, class_weight=None, presort=False)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Lần này ví dụ sẽ sử dụng data Iris, có sẵn theo gói thư viện scikit-learn. Tiến hành phân loại hoa Iris, hay còn gọi là hoa cầu vồng, dựa theo độ rộng, dài của cánh hoa, cuống hoa. Hoa Iris rất đa dạng, tầm 150 loại. Chiều rộng, chiều dài của cánh hoa, tràng hoa sẽ là biến số giải thích, biến số mục đích là loại hoa để tiến hành tạo cây quyết định.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;&amp;gt;&amp;gt;&amp;gt; # load dữ liệu
+&amp;gt;&amp;gt;&amp;gt; from sklearn.datasets import load_iris
+&amp;gt;&amp;gt;&amp;gt; iris = load_iris()
+ 
+&amp;gt;&amp;gt;&amp;gt; # biến giải thích (tương ứng với chiều rộng, dài của đài hoa, cánh hoa)
+&amp;gt;&amp;gt;&amp;gt; iris.data
+array([[ 5.1,  3.5,  1.4,  0.2],
+       [ 4.9,  3. ,  1.4,  0.2],
+       [ 4.7,  3.2,  1.3,  0.2],
+       [ 4.6,  3.1,  1.5,  0.2],
+        ... (lược bớt)
+       [ 5.9,  3. ,  5.1,  1.8]])
+ 
+&amp;gt;&amp;gt;&amp;gt; # biến mục đích (0, 1, 2 tương ứng với 3 loại hoa)
+&amp;gt;&amp;gt;&amp;gt; iris.target
+array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+       2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+       2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2])
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Sau đó cắt data thành 2 phần: training data và test data.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split( iris.data, iris.target, test_size = 0.3)
+# test_size: 30% là test data còn lại 70% để làm train data.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Tiến hành tạo cây quyết định&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;&amp;gt;&amp;gt;&amp;gt; # tạo model
+&amp;gt;&amp;gt;&amp;gt; from sklearn import tree
+&amp;gt;&amp;gt;&amp;gt; clf = tree.DecisionTreeClassifier(max_depth=3)
+&amp;gt;&amp;gt;&amp;gt; #max_depth = 3 là độ sâu của cây quyết định
+&amp;gt;&amp;gt;&amp;gt; clf = clf.fit(X_train, y_train)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ok, giờ sử dụng model đã tạo phía trên tiến hành dự đoán kết quả loài hoa nào ứng với mỗi X_test(lưu biến giải thích).&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;&amp;gt;&amp;gt;&amp;gt; # Thực hiện dự đoán kết quả từ những thông số biến giải thích đầu vào
+&amp;gt;&amp;gt;&amp;gt; predicted = clf.predict(X_test)
+ 
+&amp;gt;&amp;gt;&amp;gt; # Kết quả suy đoán
+&amp;gt;&amp;gt;&amp;gt; predicted
+array([2, 0, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 0, 1, 2, 0, 0, 1, 2, 0, 2, 2, 0,
+       1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 2, 0, 1, 1, 0, 1, 0, 2])
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Không biết tỷ lệ đúng được bao nhiêu nhỉ. Chúng ta thử dùng phép chia đơn giản để biết. Thực tế có nhiều cách tính độ chính xác cũng như sai số của thuật toán nhưng mình sẽ giới thiệu ở các bài viết sau.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;&amp;gt;&amp;gt;&amp;gt; sum(predicted==y_test)/float(len(y_test))
+0.93333333333333335
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Vậy là độ chính xác của kết quả là ~93%. Rất tuyệt vời nhỉ :D&lt;/p&gt;
+&lt;h1 id="hinthcyquytnh"&gt;Hiển thị cây quyết định&lt;/h1&gt;
+&lt;p&gt;Chúng ta có thể tạo cây quyết định dưới dạng file DOT. Và từ file DOT sẽ sử dụng &lt;code&gt;GraphViz&lt;/code&gt; hoặc &lt;code&gt;webgraphviz&lt;/code&gt; để mở.&lt;br&gt;
+Như ví dụ sau, tên của các biến giải thích được setting như sau &lt;code&gt;feature_names=iris.feature_names&lt;/code&gt;, tên của biến mục đích &lt;code&gt;class_names=iris.target_names&lt;/code&gt;, muốn màu mè cho các nhánh thì setting &lt;code&gt;filled=True&lt;/code&gt;, các góc của các nhánh bo tròn cho hoành tráng thì &lt;code&gt;rounded=True&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;&amp;gt;&amp;gt;&amp;gt; tree.export_graphviz(clf, out_file=&amp;quot;tree.dot&amp;quot;,
+                         feature_names=iris.feature_names,
+                         class_names=iris.target_names,
+                         filled=True, rounded=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Bạn sẽ tạo được file .dot, có thể dùng trang &lt;a href="http://www.webgraphviz.com/"&gt;http://www.webgraphviz.com/&lt;/a&gt; để convert sang ảnh như sau:&lt;br&gt;
+&lt;img src="http://codetudau.com/content/images/2017/09/----------2017-09-03-17.46.52.png" alt="----------2017-09-03-17.46.52"&gt;&lt;br&gt;
+Hoặc dùng package &lt;code&gt;pydotplus&lt;/code&gt; convert sang pdf, png tiện lợi hơn. Chưa có thì có thể dễ dàng install với pip.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;pip install pydotplus
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;
+&amp;gt;&amp;gt;&amp;gt; # import package  pydotplus.
+&amp;gt;&amp;gt;&amp;gt; import pydotplus
+&amp;gt;&amp;gt;&amp;gt; dot_data = tree.export_graphviz(clf , out_file = None , filled = True , rounded = True , special_characters = True)
+&amp;gt;&amp;gt;&amp;gt; graph = pydotplus.graph_from_dot_data(dot_data)
+&amp;gt;&amp;gt;&amp;gt; graph.write_pdf(&amp;quot;graph.pdf&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="http://codetudau.com/content/images/2017/09/----------2017-09-03-18.02.09.png" alt="----------2017-09-03-18.02.09"&gt;&lt;br&gt;
+Vậy là đã có file &lt;code&gt;graph.pdf&lt;/code&gt;, ngoài ra có thể tạo file png với &lt;code&gt;graph.write_png(&amp;quot;graph.png&amp;quot;)&lt;/code&gt;.&lt;br&gt;
+Với những người phân tích dữ liệu thì việc có thể quan sát cây quyết định rất tiện lợi cũng như nâng cao hiệu quả công việc đấy.&lt;/p&gt;
+&lt;/div&gt;</content:encoded></item><item><title>Thao  tác dữ liệu với Pandas - Phần 2</title><description>&lt;div class="kg-card-markdown"&gt;&lt;p&gt;Chào các bạn, hôm nay mình sẽ viết tiếp phần 2, cũng là phần cuối về việc giới thiệu, sử dụng Pandas trong Python để thao tác, xử lý dữ liệu.&lt;br&gt;
+Bài lần trước các bạn đã biết cách tạo Pandas DataFrame, các cách hiển thị dữ liêu, filter cũng&lt;/p&gt;&lt;/div&gt;</description><link>http://codetudau.com/thao-tac-du-lieu-voi-pandas-phan-2/</link><guid isPermaLink="false">59a06a4f694ef085a403b22d</guid><category>pandas</category><category>python</category><dc:creator>T.T.T</dc:creator><pubDate>Mon, 14 Aug 2017 15:44:13 GMT</pubDate><content:encoded>&lt;div class="kg-card-markdown"&gt;&lt;p&gt;Chào các bạn, hôm nay mình sẽ viết tiếp phần 2, cũng là phần cuối về việc giới thiệu, sử dụng Pandas trong Python để thao tác, xử lý dữ liệu.&lt;br&gt;
+Bài lần trước các bạn đã biết cách tạo Pandas DataFrame, các cách hiển thị dữ liêu, filter cũng như thêm cột vào DataFrame. Lần này, chúng ta tiếp tục thử tính toán, &lt;code&gt;Pivoting&lt;/code&gt;, và cách sử dụng &lt;code&gt;Group by&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id="tnhtonthngk"&gt;Tính toán thống kê&lt;/h2&gt;
+&lt;p&gt;Thử tính toán theo hàng hoặc cột của DataFrame&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;#Tính tổng theo cột
+df_sample[&amp;quot;point1&amp;quot;].sum(axis=0) # Tính tổng tất cả giá trị của point1
+#axis=0 nghĩa là hướng tính sum theo chiều dọc, mặc định là 0 nên không cần viết lại cũng được
+
+df_sample[[&amp;quot;point1&amp;quot;,&amp;quot;point2&amp;quot;]].sum(axis=0)  #score1,score2 khi đồng thời muốn tính 2 cột. Trả về 2 giá trị.
+#point1    750.0
+#point2    750.0
+
+
+#Tính theo hàng 
+df_sample[[&amp;quot;point1&amp;quot;,&amp;quot;point2&amp;quot;]].sum(axis=1)  
+#Tính tổng theo từng dòng, tổng = cột point1 + point2
+#axis=1 thì hướng tính sum theo hàng ngang. Ở Pandas, sử dụng axis nhiều nên bạn biết rõ thì sẽ tốt hơn.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Để biểu thị axis = 0 và 1 nghĩa là thế nào, đơn giản như hình sau:&lt;br&gt;
+&lt;img src="http://codetudau.com/content/images/2017/08/axis.jpg" alt="axis"&gt;&lt;br&gt;
+Như hình trên, ví dụ muốn tính toán theo hàng, tức là theo chiều ngang →　 axis=1&lt;/p&gt;
+&lt;h2 id="pivoting"&gt;Pivoting&lt;/h2&gt;
+&lt;p&gt;Hỗ trợ rất nhiều trong việc tính toán group by theo cột, được ứng dụng rất nhiều trong thực tế công việc.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;df_sample.pivot_table(&amp;quot;point1&amp;quot;,     #Chỉ định cột cần tính
+                       aggfunc=&amp;quot;sum&amp;quot;,  # Cách tính
+                       fill_value=0,   # Trong TH không có giá trị thì fill 0
+                       index=&amp;quot;class&amp;quot;,  # Giống như groupby, Cột nào sẽ làm hàng
+                       columns=&amp;quot;day_no&amp;quot;)   #Cột nào sẽ làm cột
+#day_no  day1  day2
+#class             
+#A        300     0
+#B          0   300
+#C        100    50
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="group_by"&gt;Group_by&lt;/h2&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;df_sample_grouped = df_sample.groupby(&amp;quot;day_no&amp;quot;, as_index=True)  # Group_by theo day_no
+df_sample_grouped[[&amp;quot;point1&amp;quot;,&amp;quot;point2&amp;quot;]].sum()
+# Sử dụng sum với object df_sample_grouped.
+#        point1  point2
+#day_no                
+#day1       400     330
+#day2       350     420
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Lưu ý:&lt;/strong&gt; &lt;code&gt;as_index=True&lt;/code&gt; thì key sử dụng làm &lt;code&gt;groupBy&lt;/code&gt; sẽ thành index&lt;br&gt;
+&lt;code&gt;as_index=False&lt;/code&gt; thì sẽ đánh index lại từ 0.&lt;br&gt;
+Lợi ích của việc sử dụng &lt;code&gt;as_index=True&lt;/code&gt; là nếu muốn lấy dữ liệu &lt;code&gt;day1&lt;/code&gt; thì chỉ cần:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;df_sample_grouped.loc['day1']
+#point1    400
+#point2    330
+#Name: day1, dtype: int64
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nếu &lt;code&gt;as_index=False&lt;/code&gt; và muốn lấy dữ liệu &lt;code&gt;day1&lt;/code&gt; thì index lúc này không phải là day_no nên cần phải làm như sau :&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;df_sample_grouped.loc[df_sample_grouped.day_no == 'day1']
+#  day_no    point1  point2
+#0   day1     400     330
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Về hiệu năng thì tương tự như việc đánh index trong SQL, sử dụng &lt;code&gt;df_sample_grouped.loc['day1']&lt;/code&gt; sẽ nhanh hơn rất nhiều.&lt;/p&gt;
+&lt;h2 id="tngkt"&gt;Tổng kết&lt;/h2&gt;
+&lt;p&gt;Phần 2 cũng là kết thúc chuỗi bài viết về Pandas, trên đây là những chức năng hay sử dụng trong quá trình thực tế. Chắc chắn sẽ giúp ích cho các bạn mới làm quen với Pandas. Hẹn gặp lại các bạn ở các bài viết sau.&lt;/p&gt;
+&lt;/div&gt;</content:encoded></item><item><title>Thao  tác dữ liệu với Pandas - Phần 1</title><description>Pandas là 1 open source, được cộng đồng đánh giá là high-performance, việc xử lý dữ liệu, tính toán sẽ dễ dàng hơn rất nhiều cách truyền thống.</description><link>http://codetudau.com/thao-tac-du-lieu-voi-pandas/</link><guid isPermaLink="false">59a06a4f694ef085a403b22c</guid><category>pandas</category><category>python</category><category>BIG DATA</category><dc:creator>T.T.T</dc:creator><pubDate>Sat, 12 Aug 2017 07:25:29 GMT</pubDate><content:encoded>&lt;div class="kg-card-markdown"&gt;&lt;h1 id="tisaophibitpandas"&gt;Tại sao phải biết Pandas&lt;/h1&gt;
+&lt;p&gt;Giống như muốn chăn rau, à trồng rau thì phải có cuốc, mặc dù không có cuốc thì dùng tay vẫn trồng được, nhưng mà có phải khổ hơn không. Trong việc xử lý dữ liệu với Python cũng thế, bạn không dùng Pandas cũng được, nhưng sẽ vất vả hơn rất nhiều.&lt;br&gt;
+OK, xem pandas có gì hay nào.&lt;/p&gt;
+&lt;h1 id="pandaslg"&gt;Pandas là gì&lt;/h1&gt;
+&lt;p&gt;Về cơ bản Pandas là 1 open source, được cộng đồng đánh giá là high-performance, việc xử lý dữ liệu, tính toán sẽ dễ dàng hơn rất nhiều cách truyền thống. OK, xem pandas có gì thú vị nào.&lt;/p&gt;
+&lt;h1 id="todata"&gt;Tạo data&lt;/h1&gt;
+&lt;p&gt;Công việc đầu tiên là import thư viện Pandas và tạo Pandas DataFrame&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;import pandas as pd
+
+#Tạo data cần dùng
+df_sample =\
+pd.DataFrame([[&amp;quot;day1&amp;quot;,&amp;quot;day2&amp;quot;,&amp;quot;day1&amp;quot;,&amp;quot;day2&amp;quot;,&amp;quot;day1&amp;quot;,&amp;quot;day2&amp;quot;],
+              [&amp;quot;A&amp;quot;,&amp;quot;B&amp;quot;,&amp;quot;A&amp;quot;,&amp;quot;B&amp;quot;,&amp;quot;C&amp;quot;,&amp;quot;C&amp;quot;],
+              [100,150,200,150,100,50],
+              [120,160,100,180,110,80]] ).T  
+
+#Thêm tên column
+df_sample.columns = [&amp;quot;day_no&amp;quot;,&amp;quot;class&amp;quot;,&amp;quot;score1&amp;quot;,&amp;quot;score2&amp;quot;]  
+#Gắn thêm index
+df_sample.index   = [11,12,13,14,15,16]
+import pandas as pd
+
+# Tạo data cần dùng
+df_sample = pd.DataFrame([[&amp;quot;day1&amp;quot;, &amp;quot;day2&amp;quot;, &amp;quot;day1&amp;quot;, &amp;quot;day2&amp;quot;, &amp;quot;day1&amp;quot;, &amp;quot;day2&amp;quot;],
+                          [&amp;quot;A&amp;quot;, &amp;quot;B&amp;quot;, &amp;quot;A&amp;quot;, &amp;quot;B&amp;quot;, &amp;quot;C&amp;quot;, &amp;quot;C&amp;quot;],
+                          [100, 150, 200, 150, 100, 50],
+                          [120, 160, 100, 180, 110, 80]]).T
+
+# Thêm tên column
+df_sample.columns = [&amp;quot;day_no&amp;quot;, &amp;quot;class&amp;quot;, &amp;quot;score1&amp;quot;, &amp;quot;score2&amp;quot;]
+
+# Gắn với index
+df_sample.index = [11, 12, 13, 14, 15, 16]
+df_sample
+#    day_no class score1 score2
+# 11   day1     A    100    120
+# 12   day2     B    150    160
+# 13   day1     A    200    100
+# 14   day2     B    150    180
+# 15   day1     C    100    110
+# 16   day2     C     50     80
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="thaotcvicolumnindex"&gt;Thao tác với Column/Index&lt;/h2&gt;
+&lt;p&gt;Bạn có thể truy cập thay đổi index hoặc column như sau:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;# Lấy tên của cột
+df_sample.columns
+# Index([u'day_no', u'class', u'score1', u'score2'], dtype='object')
+
+# Lấy tên
+df_sample.index
+# Int64Index([11, 12, 13, 14, 15, 16], dtype='int64')
+
+#Ghi đè tên columns
+df_sample.columns = [&amp;quot;day_no&amp;quot;,&amp;quot;class&amp;quot;,&amp;quot;point1&amp;quot;,&amp;quot;point2&amp;quot;]
+
+#Ghi đè index
+df_sample.index = [11,12,13,14,15,16]
+
+# Sử dụng method rename point1 →　point
+df_sample.rename(columns={'point1': 'point'})
+# day_no class point point2
+# 11   day1     A   100    120
+# 12   day2     B   150    160
+# 13   day1     A   200    100
+# 14   day2     B   150    180
+# 15   day1     C   100    110
+# 16   day2     C    50     80
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="kimtrathngtincadata"&gt;Kiểm tra thông tin của data&lt;/h2&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;# Số row
+len(df_sample)
+
+# Kích thước data
+#Trả về（số hàng、số cột)
+df_sample.shape
+
+
+# Thông tin từng column
+df_sample.info()
+# &amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
+# Int64Index: 6 entries, 11 to 16
+# Data columns (total 4 columns):
+# day_no    6 non-null object
+# class     6 non-null object
+# point1    6 non-null object
+# point2    6 non-null object
+# dtypes: object(4)
+# memory usage: 240.0+ bytes
+
+# Trả về các giá trị như TBC, phân tán, tứ phân vị
+df_sample.describe()
+#        day_no class  point1  point2
+# count       6     6       6       6
+# unique      2     3       4       6
+# top      day1     B     150     110
+# freq        3     2       2       1
+
+# Hiển thị 10 dòng đầu tiên
+df_sample.head(10)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="thaotcvidata"&gt;Thao tác với data&lt;/h1&gt;
+&lt;p&gt;Lấy 1 số cột theo ý muốn&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;# Với cách gọi như dưới chính là sử dụng method __get_item___
+df_sample[&amp;quot;day_no&amp;quot;]
+# 11    day1
+# 12    day2
+# 13    day1
+# 14    day2
+# 15    day1
+# 16    day2
+# Name: day_no, dtype: object
+
+# Giống như trên, nhưng muốn lấy nhiều cột một lúc
+df_sample[[&amp;quot;day_no&amp;quot;,&amp;quot;score1&amp;quot;]]
+
+# Sử dụng loc
+# Phương pháp ：iloc[rows, columns]
+df_sample.loc[:,&amp;quot;day_no&amp;quot;]  # Muốn hiển thị cả cột thì thêm「:」
+df_sample.loc[:,[&amp;quot;day_no&amp;quot;,&amp;quot;score1&amp;quot;]] #TH muốn lấy nhiều cột một lúc
+
+# Sử dụng iloc
+# Phương pháp ：iloc[rows số bao nhiêu , column số bao nhiêu]
+df_sample.iloc[:,0]
+df_sample.iloc[:,0:2] #TH lấy nhiều cột
+
+
+# Sử dụng ix
+# Dùng số thứ tự hoặc tên cột đều được
+df_sample.ix[:,&amp;quot;day_no&amp;quot;] # Tuy nhiên nếu lấy 1 cột thì KQ trả về dạng Pandas.Series Object
+df_sample.ix[:,[&amp;quot;day_no&amp;quot;,&amp;quot;score1&amp;quot;]] # Ngược lại, lấy nhiều cột thì là Pandas.Dataframe
+
+df_sample.ix[0:4,&amp;quot;score1&amp;quot;] # hàng dùng số thứ tự, cột dùng tên cũng ok hết
+
+series_bool = [True,False,True,False]
+df_sample.ix[:,series_bool]  #Ngoài ra、lấy theo thứ tự array Boolean cũng được
+# day_no class point1 point2
+# 11   day1     A    100    120
+# 12   day2     B    150    160
+# 13   day1     A    200    100
+# 14   day2     B    150    180
+# 15   day1     C    100    110
+# 16   day2     C     50     80
+
+
+score_select = pd.Series(df_sample.columns).str.contains(&amp;quot;score&amp;quot;) # Xem có cột nào contains &amp;quot;score&amp;quot;
+# 0    True 
+# 1    False
+# 2    False
+# 3    False
+df_sample.ix[:, np.array(score_select)]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="subsetting"&gt;Subsetting&lt;/h2&gt;
+&lt;p&gt;Lấy ra 1 phần data thoả mãn điều kiện&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;df_sample[df_sample.day_no == &amp;quot;day1&amp;quot;]  # Lọc ra nguyên row có day_no = day1
+#    day_no class point1 point2
+# 11   day1     A    100    120
+# 13   day1     A    200    100
+# 15   day1     C    100    110
+
+# Cách khác là dùng arr boolean để lọc row dataframe như sau
+series_bool = [True,False,True,False,True,False] #Lưu ý: số row = len(series_bool)
+df_sample[series_bool]
+
+
+#Sử dụng method query của Pandas
+df_sample.query(&amp;quot;day_no == 'day1'&amp;quot;)
+# So với cách trên không phải viết lại tên dataframe 2 lần :D
+# Chú ý là điều kiện bắt buộc là str
+
+# TH nhiều đkien or là &amp;quot;|&amp;quot; and là &amp;quot;&amp;amp;&amp;quot;
+df_sample.query(&amp;quot;day_no == 'day1'|day_no == 'day2'&amp;quot;)
+
+# Nếu muốn sử dụng biến số
+select_condition = &amp;quot;day1&amp;quot;
+df_sample.query(&amp;quot;day_no == select_condition&amp;quot;)  # ☓ báo lỗi
+# Do đkien bắt buộc là kiểu str nên muốn sử dụng biến số thì không thể viết kiểu thông thường, cần thêm @
+df_sample.query(&amp;quot;day_no == @select_condition&amp;quot;)  # ◯ cách viết đúng
+
+
+#Subsetting sử dụng index
+df_sample.query(&amp;quot;index == 11 &amp;quot;)  # Lấy row có index 11
+df_sample.query(&amp;quot;index  in [11,12] &amp;quot;) #　or là「in」
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="sorting"&gt;Sorting&lt;/h2&gt;
+&lt;p&gt;Tiến hành sắp xếp lại&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;df_sample.sort_values(&amp;quot;point1&amp;quot;)  # Sort point1 theo thứ tự tăng dần
+df_sample.sort_values([&amp;quot;point1&amp;quot;,&amp;quot;point2&amp;quot;])  # Sort 2 cột theo thứ tự tăng dần
+
+
+df_sample.sort_values(&amp;quot;point1&amp;quot;,ascending=False)  #point1 giam dan
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="pandasconcat"&gt;pandas.concat&lt;/h2&gt;
+&lt;p&gt;Tiến hành thêm cột, record&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;
+# Thêm record
+# Trước tiên phải tạo 1 DF cấu trúc giống DF hiện có
+df_addition_row = pd.DataFrame([[&amp;quot;day1&amp;quot;,&amp;quot;A&amp;quot;,100,180]])
+df_addition_row.columns =[&amp;quot;day_no&amp;quot;,&amp;quot;class&amp;quot;,&amp;quot;point1&amp;quot;,&amp;quot;point2&amp;quot;]
+df_addition_row.index   =[17] #Index đương nhiên phải khác nhau
+
+pd.concat([df_sample,df_addition_row],axis=0)
+# Axis=0: Kiểu kết hợp theo hướng thẳng đứng, -&amp;gt; thêm cột thì axis = 1
+
+
+# Thêm cột
+# Thêm cột point3
+df_addition_col = pd.DataFrame([[120,160,100,180,110,80]]).T #Tạo 1 DF có cột giống cấu trúc df_sample
+df_addition_col.columns =[&amp;quot;point3&amp;quot;]
+df_addition_col.index   = [11,12,13,14,15,16]
+
+pd.concat([df_sample,df_addition_col],axis=1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content:encoded></item><item><title>Xử lý dữ liệu với Spark Dataframe</title><description>&lt;div class="kg-card-markdown"&gt;&lt;p&gt;Đầu tiên, bạn có biết Spark là gì chưa nhỉ.&lt;/p&gt;
+&lt;p&gt;Nếu chưa biết Spark là gì thì bạn nên tìm hiểu Spark, cũng như làm quen với nó trước nhé.&lt;/p&gt;
+&lt;p&gt;Bạn có thể tìm hiểu Spark qua link sau: &lt;a href="https://vietnamlab.vn/blog/tag/spark/"&gt;Các bài viết liên quan đến Spark&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt; I. Vậy, Spark DataFrame&lt;/h3&gt;&lt;/div&gt;</description><link>http://codetudau.com/xu-ly-du-lieu-voi-spark-dataframe/</link><guid isPermaLink="false">59a06a4f694ef085a403b22b</guid><category>spark</category><category>dataframe</category><category>BIG DATA</category><dc:creator>T.T.T</dc:creator><pubDate>Fri, 11 Aug 2017 14:36:49 GMT</pubDate><content:encoded>&lt;div class="kg-card-markdown"&gt;&lt;p&gt;Đầu tiên, bạn có biết Spark là gì chưa nhỉ.&lt;/p&gt;
+&lt;p&gt;Nếu chưa biết Spark là gì thì bạn nên tìm hiểu Spark, cũng như làm quen với nó trước nhé.&lt;/p&gt;
+&lt;p&gt;Bạn có thể tìm hiểu Spark qua link sau: &lt;a href="https://vietnamlab.vn/blog/tag/spark/"&gt;Các bài viết liên quan đến Spark&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt; I. Vậy, Spark DataFrame là gì ấy nhỉ ?&lt;/h3&gt;
+&lt;p&gt;Ngày xửa, ngày xưa, khi Spark ver 1.3 ra đời, Spark đã đẻ thêm tính năng có tên là Spark DataFrame. Vậy nó có gì hay ho nhỉ ?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Có thể thiết lập &lt;a href="https://stackoverflow.com/questions/298739/what-is-the-difference-between-a-schema-and-a-table-and-a-database"&gt;Schema&lt;/a&gt; cho Spark RDD và có thể tạo Object DataFrame.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Chưa thấy hay lắm nhỉ, dùng Spark RDD có sao đâu...&lt;br&gt;
+Thế bạn thao tác dữ liệu chỉ sử dụng RDD thấy gặp vấn đề gì phức tạp không ?&lt;br&gt;
+Viết code có khó khăn không ? Rồi vấn đề về hiệu năng ?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Giống như viết SQL, đầy đủ chức năng như select, where ... đặc biệt là join với các DataFrame khác.&lt;/li&gt;
+&lt;li&gt;Sử dụng các method như filter, select để trích xuất dữ liệu theo cột, hàng.&lt;/li&gt;
+&lt;li&gt;Xử gọn các loại data như Log ... với groupBy → agg&lt;/li&gt;
+&lt;li&gt;Thêm 1 cột dễ dàng với UDF(User Defined Function)&lt;/li&gt;
+&lt;li&gt;Giống như SQL, Spark DataFrame đã hỗ trợ &lt;a href="http://oracletechtalk.blogspot.jp/2015/09/pivot-va-unpivot-phan-1.html"&gt;Pivot&lt;/a&gt; (Spark 1.6 trở lên) rất hữu ích cho việc lập bảng biểu, báo cáo.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Tóm lại là dễ xài, đơn giản hơn RDD mà hiệu suất, khả năng optimized truy vấn tốt hơn RDD.&lt;br&gt;
+Chính vì vậy với các trường hợp thông thường, các bạn nên xài DataFrame.&lt;/p&gt;
+&lt;h3&gt;II. Tạo DataFrame như thế nào nhỉ ?&lt;/h3&gt;
+&lt;p&gt;Bài viết này sẽ sử dụng file log này để thực hành nhé. &lt;a href="https://drive.google.com/file/d/0B7Z4XTfCeeq_TFJLZmVmczhILUU/view?usp=sharing"&gt;Link dowload&lt;/a&gt;. Cấu trúc file Log gồm 3 cột : Date, User_ID, Campaign_ID&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;click.at	user.id	campaign.id
+4/27/2015 20:40	144012	Campaign077
+4/27/2015 00:27	24485	Campaign063
+4/27/2015 00:28	24485	Campaign063
+4/27/2015 00:33	24485	Campaign038
+4/27/2015 01:00	24485	Campaign063
+4/27/2015 16:10	145066	Campaign103
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Cách 1: Tạo từ RDD&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Nếu bạn đã có RDD với tên column và type tương ứng (TimestampType, IntegerType, StringType)thì bạn có thể dễ dàng tạo DataFrame bằng&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;sqlContext.createDataFrame(my_rdd, my_schema)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Với &lt;code&gt;printSchema(), dtypes&lt;/code&gt; sẽ in thông tin của schema&lt;br&gt;
+và &lt;code&gt;count()&lt;/code&gt; trả về số record&lt;/p&gt;
+&lt;p&gt;Và nếu chỉ muốn in n record đầu tiên thì sử dụng &lt;code&gt;show(n)&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;fields = [StructField(&amp;quot;access_time&amp;quot;, TimestampType(), True), StructField(&amp;quot;userID&amp;quot;, IntegerType(), True), StructField(&amp;quot;campaignID&amp;quot;, StringType(), True)]
+schema = StructType(fields)
+
+whole_log_df = sqlContext.createDataFrame(whole_log, schema)
+print whole_log_df.count()
+print whole_log_df.printSchema()
+print whole_log_df.dtypes
+print whole_log_df.show(5)
+
+#327430
+#root
+# |-- access_time: timestamp (nullable = true)
+# |-- userID: integer (nullable = true)
+# |-- campaignID: string (nullable = true)
+#
+#[('access_time', 'timestamp'), ('userID', 'int'), ('campaignID', 'string')]
+#
+#+--------------------+------+-----------+
+#|         access_time|userID| campaignID|
+#+--------------------+------+-----------+
+#|2015-04-27 20:40:...|144012|Campaign077|
+#|2015-04-27 00:27:...| 24485|Campaign063|
+#|2015-04-27 00:28:...| 24485|Campaign063|
+#|2015-04-27 00:33:...| 24485|Campaign038|
+#|2015-04-27 01:00:...| 24485|Campaign063|
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Cách 2: Tạo trực tiếp từ file CSV&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;from pyspark.shell import spark
+from pyspark.sql.types import *
+
+# Định nghĩa Schema
+struct = StructType([
+    StructField('a', StringType(), False),
+    StructField('b', StringType(), False),
+    StructField('c', StringType(), False)
+])
+
+# Tạo DataFrame từ file CSV
+df_data = spark.read.csv('click_data_sample', struct)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ngoài cách trên còn rất nhiều cách khác, có thể kể đến là gọi cổ 1 thằng thuộc họ nhà &lt;a href="https://spark-packages.org/"&gt;Spark Package&lt;/a&gt; tên là &lt;a href="https://github.com/databricks/spark-csv"&gt;spark-csv&lt;/a&gt; ra xài, hỗ trợ nhiều method hữu ích, dễ chơi, dễ trúng thưởng hơn.&lt;/p&gt;
+&lt;p&gt;Lưu ý là nếu không định nghĩa schema thì tất cả các column sẽ có kiểu string. Nhưng nếu dùng thêm thằng em &lt;code&gt;inferSchema&lt;/code&gt; thì mọi chuyện sẽ êm xuôi. ^^ Không tin đơn giản như vậy ư, bạn thử như code dưới xem ^^&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;whole_log_df_2 = sqlContext.read.format(&amp;quot;com.databricks.spark.csv&amp;quot;).option(&amp;quot;header&amp;quot;, &amp;quot;true&amp;quot;).load(&amp;quot;/user/hadoop/click_data_sample.csv&amp;quot;)
+print whole_log_df_2.printSchema()
+print whole_log_df_2.show(5)
+
+#root
+# |-- click.at: string (nullable = true)
+# |-- user.id: string (nullable = true)
+# |-- campaign.id: string (nullable = true)
+#
+#+-------------------+-------+-----------+
+#|           click.at|user.id|campaign.id|
+#+-------------------+-------+-----------+
+#|2015-04-27 20:40:40| 144012|Campaign077|
+#|2015-04-27 00:27:55|  24485|Campaign063|
+#|2015-04-27 00:28:13|  24485|Campaign063|
+#|2015-04-27 00:33:42|  24485|Campaign038|
+#|2015-04-27 01:00:04|  24485|Campaign063|
+
+whole_log_df_3 = sqlContext.read.format(&amp;quot;com.databricks.spark.csv&amp;quot;).option(&amp;quot;header&amp;quot;, &amp;quot;true&amp;quot;).option(&amp;quot;inferSchema&amp;quot;, &amp;quot;true&amp;quot;).load(&amp;quot;click_data_sample.csv&amp;quot;)
+print whole_log_df_3.printSchema()
+
+#root
+# |-- click.at: timestamp (nullable = true)
+# |-- user.id: integer (nullable = true)
+# |-- campaign.id: string (nullable = true)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nhân tiện đây, đôi lúc tên column không được chuẩn như Lê Duẩn thì bạn có thể dễ dàng thay đổi tên column bằng &lt;code&gt;withColumnRenamed&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Và cũng tiện đây, có 1 lưu ý là về cơ bản DataFrame là &lt;code&gt;imutable&lt;/code&gt;(ông cha ta hay gọi với cái tên thuần Tàu là &lt;code&gt;bất biến&lt;/code&gt;) nên hễ có thay đổi nội dung của DataFrame thì 1 DataFrame mới sẽ được tạo để lưu trữ những thay đổi đó.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;whole_log_df_4 = whole_log_df_3.withColumnRenamed(&amp;quot;click.at&amp;quot;, &amp;quot;access_time&amp;quot;)\
+                 .withColumnRenamed(&amp;quot;user.id&amp;quot;, &amp;quot;userID&amp;quot;)\
+                 .withColumnRenamed(&amp;quot;campaign.id&amp;quot;, &amp;quot;campaignID&amp;quot;)
+print whole_log_df_4.printSchema()
+
+#root
+# |-- access_time: timestamp (nullable = true)
+# |-- userID: integer (nullable = true)
+# |-- campaignID: string (nullable = true)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Cách 3: Giao lưu trực tiếp từ file json&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Bằng cách sử dụng &lt;code&gt;sqlContext.read.json&lt;/code&gt;. Mỗi dòng của file json sẽ được coi là 1 object. Trong trường hợp object thiếu data thì sẽ null tại đó.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;# test_json.json gồm 3 dòng như dưới, dòng cuối không có &amp;quot;campaignID&amp;quot;
+#
+#{&amp;quot;access_time&amp;quot;: &amp;quot;2015-04-27 20:40:40&amp;quot;, &amp;quot;userID&amp;quot;: &amp;quot;24485&amp;quot;, &amp;quot;campaignID&amp;quot;: &amp;quot;Campaign063&amp;quot;}
+#{&amp;quot;access_time&amp;quot;: &amp;quot;2015-04-27 00:27:55&amp;quot;, &amp;quot;userID&amp;quot;: &amp;quot;24485&amp;quot;, &amp;quot;campaignID&amp;quot;: &amp;quot;Campaign038&amp;quot;}
+#{&amp;quot;access_time&amp;quot;: &amp;quot;2015-04-27 00:27:55&amp;quot;, &amp;quot;userID&amp;quot;: &amp;quot;24485&amp;quot;}
+
+df_json = sqlContext.read.json(&amp;quot;test_json.json&amp;quot;)
+df_json.printSchema()
+df_json.show(5)
+
+#root
+# |-- access_time: string (nullable = true)
+# |-- campaignID: string (nullable = true)
+# |-- userID: string (nullable = true)
+#
+#+-------------------+-----------+------+
+#|        access_time| campaignID|userID|
+#+-------------------+-----------+------+
+#|2015-04-27 20:40:40|Campaign063| 24485|
+#|2015-04-27 00:27:55|Campaign038| 24485|
+#|2015-04-27 00:27:55|       null| 24485|
+#+-------------------+-----------+------+
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Cách 4: Giao thông trực tiếp từ parquet&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Nếu bạn chưa biết parquet là gì thì tham khảo tại &lt;a href="https://parquet.apache.org/"&gt;đây&lt;/a&gt; nhé. Với rất nhiều ưu điểm, mình sẽ giới thiệu vào 1 bài nào đó ở lúc nào đó nhé. ^^&lt;br&gt;
+Và cách đọc, đơn giản như đan rổ là sử dụng &lt;code&gt;sqlContext.read.parquet&lt;/code&gt;. Như đoạn code bên dưới, cả folder chứa file parquet sẽ được đọc. Quá nhanh gọn lẹ phải không.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;sqlContext.read.parquet(&amp;quot;/user/hadoop/parquet_folder/&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;III. Thao tác với DataFrame &lt;/h3&gt;
+&lt;h4&gt;1. Thử query bằng SQL&lt;/h4&gt;
+&lt;p&gt;Bằng cách sử dụng &lt;code&gt;registerTempTable&lt;/code&gt;, bạn sẽ có một table được tham chiếu đến Dataframe đó, bạn có thể sử dụng tên table này để viết query SQL. Nếu bạn sử dụng &lt;code&gt;sqlContext.sql('query SQL')&lt;/code&gt; thì giá trị trả về cũng là Dataframe.&lt;/p&gt;
+&lt;p&gt;Có 1 lưu ý là: Bạn cũng có thể viết subquery nhưng subquery cần được gán Alias, nếu không toạch lô (Syntax error) đấy.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;#SQL query
+
+whole_log_df.registerTempTable(&amp;quot;whole_log_table&amp;quot;)
+
+print sqlContext.sql(&amp;quot; SELECT * FROM whole_log_table where campaignID == 'Campaign047' &amp;quot;).count()
+#18081
+print sqlContext.sql(&amp;quot; SELECT * FROM whole_log_table where campaignID == 'Campaign047' &amp;quot;).show(5)
+#+--------------------+------+-----------+
+#|         access_time|userID| campaignID|
+#+--------------------+------+-----------+
+#|2015-04-27 05:26:...| 14151|Campaign047|
+#|2015-04-27 05:26:...| 14151|Campaign047|
+#|2015-04-27 05:26:...| 14151|Campaign047|
+#|2015-04-27 05:27:...| 14151|Campaign047|
+#|2015-04-27 05:28:...| 14151|Campaign047|
+#+--------------------+------+-----------+
+
+
+#Trường hợp thêm biến số vào trong câu SQL
+for count in range(1, 3):
+    print &amp;quot;Campaign00&amp;quot; + str(count)
+    print sqlContext.sql(&amp;quot;SELECT count(*) as access_num FROM whole_log_table where campaignID == 'Campaign00&amp;quot; + str(count) + &amp;quot;'&amp;quot;).show()
+
+#Campaign001
+#+----------+
+#|access_num|
+#+----------+
+#|      2407|
+#+----------+
+#
+#Campaign002
+#+----------+
+#|access_num|
+#+----------+
+#|      1674|
+#+----------+
+
+#Trường hợp Sub Query：
+print sqlContext.sql(&amp;quot;SELECT count(*) as first_count FROM (SELECT userID, min(access_time) as first_access_date FROM whole_log_table GROUP BY userID) subquery_alias WHERE first_access_date &amp;lt; '2015-04-28'&amp;quot;).show(5)
+#+------------+
+#|first_count |
+#+------------+
+#|       20480|
+#+------------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;2. Tìm kiếm sử dụng filter, select&lt;/h4&gt;
+&lt;p&gt;Đối với DataFrame , tìm kiếm kèm điều kiện rất đơn giản. Giống với câu query ở trên nhưng &lt;code&gt;filter, select&lt;/code&gt; dễ dàng hơn rất nhiều. Vậy &lt;code&gt;filter&lt;/code&gt; và &lt;code&gt;select&lt;/code&gt; khác nhau thế nào ?&lt;/p&gt;
+&lt;p&gt;Cùng là để tìm kiếm nhưng &lt;code&gt;filter&lt;/code&gt; trả về những row thoả mãn điều kiện, trong đó &lt;code&gt;select&lt;/code&gt; lấy dữ liệu theo column.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;#Ví dụ filter
+print whole_log_df.filter(whole_log_df[&amp;quot;access_time&amp;quot;] &amp;lt; &amp;quot;2015-04-28&amp;quot;).count()
+#41434
+print whole_log_df.filter(whole_log_df[&amp;quot;access_time&amp;quot;] &amp;gt; &amp;quot;2015-05-01&amp;quot;).show(3)
+#+--------------------+------+-----------+
+#|         access_time|userID| campaignID|
+#+--------------------+------+-----------+
+#|2015-05-01 22:11:...|114157|Campaign002|
+#|2015-05-01 23:36:...| 93708|Campaign055|
+#|2015-05-01 22:51:...| 57798|Campaign046|
+#+--------------------+------+-----------+
+
+#Ví dụ select
+print whole_log_df.select(&amp;quot;access_time&amp;quot;, &amp;quot;userID&amp;quot;).show(3)
+#+--------------------+------+
+#|         access_time|userID|
+#+--------------------+------+
+#|2015-04-27 20:40:...|144012|
+#|2015-04-27 00:27:...| 24485|
+#|2015-04-27 00:28:...| 24485|
+#+--------------------+------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;3. Sử dụng groupBy &lt;/h4&gt;
+&lt;p&gt;groupBy có chức năng giống với reduceByKey của RDD, nhưng nó còn cung cấp &lt;a href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.GroupedData"&gt;1 rổ method&lt;/a&gt;. Ở đây mình sẽ run thử code count, agg.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;groupBy→count&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Ví dụ sau sẽ lấy key là &lt;code&gt;campaignID&lt;/code&gt; và tiến hành &lt;code&gt;groupBy&lt;/code&gt;. Sau đó dùng &lt;code&gt;count()&lt;/code&gt; để lấy số record ứng với mỗi key.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;print whole_log_df.groupBy(&amp;quot;campaignID&amp;quot;).count().sort(&amp;quot;count&amp;quot;, ascending=False).show(5)
+#+-----------+-----+
+#| campaignID|count|
+#+-----------+-----+
+#|Campaign116|22193|
+#|Campaign027|19206|
+#|Campaign047|18081|
+#|Campaign107|13295|
+#|Campaign131| 9068|
+#+-----------+-----+
+
+print whole_log_df.groupBy(&amp;quot;campaignID&amp;quot;, &amp;quot;userID&amp;quot;).count().sort(&amp;quot;count&amp;quot;, ascending=False).show(5)
+#+-----------+------+-----+
+#| campaignID|userID|count|
+#+-----------+------+-----+
+#|Campaign047| 30292|  633|
+#|Campaign086|107624|  623|
+#|Campaign047|121150|  517|
+#|Campaign086| 22975|  491|
+#|Campaign122| 90714|  431|
+#+-----------+------+-----+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;groupBy→pivot&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Pivot thì từ Spark v1.6 trở lên được đưa vào, có chức năng giống với pivot trong SQL. Thử áp dụng xem sao nhỉ :&lt;/p&gt;
+&lt;p&gt;Trước khi pivot (&lt;code&gt;agged_df&lt;/code&gt;)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Số hàng = số &lt;code&gt;UserID(=75,545) * campainID(=133)&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Số cột = &lt;code&gt;3&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Sau khi pivot(&lt;code&gt;pivot_df&lt;/code&gt;)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Số hàng = số &lt;code&gt;UserID(=75,545)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Số cột =  &lt;code&gt;UserID + số CampainID = 1 + 133 = 134&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Tất nhiên là bạn phải groupBy(cột giữ nguyên).pivot(cột muốn chuyển sang ngang).sum()&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;agged_df = whole_log_df.groupBy(&amp;quot;userID&amp;quot;, &amp;quot;campaignID&amp;quot;).count()
+print agged_df.show(3)
+
+#+------+-----------+-----+
+#|userID| campaignID|count|
+#+------+-----------+-----+
+#|155812|Campaign107|    4|
+#|103339|Campaign027|    1|
+#|169114|Campaign112|    1|
+#+------+-----------+-----+
+
+#Những cell không có giá trị -&amp;gt; null
+pivot_df = agged_df.groupBy(&amp;quot;userID&amp;quot;).pivot(&amp;quot;campaignID&amp;quot;).sum(&amp;quot;count&amp;quot;)
+print pivot_df.printSchema()
+
+#root
+# |-- userID: integer (nullable = true)
+# |-- Campaign001: long (nullable = true)
+# |-- Campaign002: long (nullable = true)
+# ..
+# |-- Campaign133: long (nullable = true)
+
+#TH muốn add 0 vào cell NULL
+pivot_df2 = agged_df.groupBy(&amp;quot;userID&amp;quot;).pivot(&amp;quot;campaignID&amp;quot;).sum(&amp;quot;count&amp;quot;).fillna(0)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;4. Thêm cột sử dụng UDF&lt;/h4&gt;
+&lt;p&gt;Trong Spark DataFrame có thể sử dụng UDF, với ứng dụng chính là thêm cột. Như đã nói ở trên, bản chất DataFrame là immutable nên khi thêm cột thì 1 DataFrame mới sẽ được tạo.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;from pyspark.sql.functions import UserDefinedFunction
+from pyspark.sql.types import DoubleType
+
+def add_day_column(access_time):
+    return int(access_time.strftime(&amp;quot;%Y%m%d&amp;quot;))
+
+my_udf = UserDefinedFunction(add_day_column, IntegerType())
+print whole_log_df.withColumn(&amp;quot;access_day&amp;quot;, my_udf(&amp;quot;access_time&amp;quot;)).show(5)
+
+#+--------------------+------+-----------+----------+
+#|         access_time|userID| campaignID|access_day|
+#+--------------------+------+-----------+----------+
+#|2015-04-27 20:40:...|144012|Campaign077|  20150427|
+#|2015-04-27 00:27:...| 24485|Campaign063|  20150427|
+#|2015-04-27 00:28:...| 24485|Campaign063|  20150427|
+#|2015-04-27 00:33:...| 24485|Campaign038|  20150427|
+#|2015-04-27 01:00:...| 24485|Campaign063|  20150427|
+#+--------------------+------+-----------+----------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Cũng có thể sử dụng &lt;code&gt;lambda&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;my_udf2 = UserDefinedFunction(lambda x: x + 5, IntegerType())
+print whole_log_df.withColumn(&amp;quot;userID_2&amp;quot;, my_udf2(&amp;quot;userID&amp;quot;)).show(5)
+
+#+--------------------+------+-----------+--------+
+#|         access_time|userID| campaignID|userID_2|
+#+--------------------+------+-----------+--------+
+#|2015-04-27 20:40:...|144012|Campaign077|  144017|
+#|2015-04-27 00:27:...| 24485|Campaign063|   24490|
+#|2015-04-27 00:28:...| 24485|Campaign063|   24490|
+#|2015-04-27 00:33:...| 24485|Campaign038|   24490|
+#|2015-04-27 01:00:...| 24485|Campaign063|   24490|
+#+--------------------+------+-----------+--------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ngược lại, muốn xóa cột thì sử dụng &lt;code&gt;df.drop()&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;print whole_log_df.drop(&amp;quot;userID&amp;quot;).show(3)
+
+#+--------------------+-----------+
+#|         access_time| campaignID|
+#+--------------------+-----------+
+#|2015-04-27 20:40:...|Campaign077|
+#|2015-04-27 00:27:...|Campaign063|
+#|2015-04-27 00:28:...|Campaign063|
+#+--------------------+-----------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;5. Join 2 DataFrame &lt;/h4&gt;
+&lt;p&gt;Tính năng rất quan trọng khi xử lý dữ liệu chính là join.&lt;br&gt;
+Mình sẽ sử dụng data đầu vào ban đầu để tạo ra 1 DataFrame mới chứa những userID có count &amp;gt;100&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;heavy_user_df1 = whole_log_df.groupBy(&amp;quot;userID&amp;quot;).count()
+heavy_user_df2 = heavy_user_df1.filter(heavy_user_df1 [&amp;quot;count&amp;quot;] &amp;gt;= 100)
+
+print heavy_user_df2 .printSchema()
+print heavy_user_df2 .show(3)
+print heavy_user_df2 .count()
+
+#root
+# |-- userID: integer (nullable = true)
+# |-- count: long (nullable = false)
+#
+#+------+-----+
+#|userID|count|
+#+------+-----+
+#| 84231|  134|
+#| 13431|  128|
+#|144432|  113|
+#+------+-----+
+#
+#177
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Được &lt;code&gt;heavy_user_df2&lt;/code&gt; rồi tiến hành join (mặc định là inner join).&lt;/p&gt;
+&lt;p&gt;Các kiểu join bao gồm : inner, outer, left_outer, rignt_outer&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;joinded_df = whole_log_df.join(heavy_user_df2, whole_log_df[&amp;quot;userID&amp;quot;] == heavy_user_df2[&amp;quot;userID&amp;quot;], &amp;quot;inner&amp;quot;).drop(heavy_user_df2[&amp;quot;userID&amp;quot;]).drop(&amp;quot;count&amp;quot;)
+print joinded_df.printSchema()
+print joinded_df.show(3)
+print joinded_df.count()
+
+#root
+# |-- access_time: timestamp (nullable = true)
+# |-- campaignID: string (nullable = true)
+# |-- userID: integer (nullable = true)
+
+#None
+#+--------------------+-----------+------+
+#|         access_time| campaignID|userID|
+#+--------------------+-----------+------+
+#|2015-04-27 02:07:...|Campaign086| 13431|
+#|2015-04-28 00:07:...|Campaign086| 13431|
+#|2015-04-29 06:01:...|Campaign047| 13431|
+#+--------------------+-----------+------+
+#
+#38729
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;6. Lấy data theo cột trong DataFrame &lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Lấy lable của cột (&lt;code&gt;df.columns&lt;/code&gt;) -&amp;gt; Trả về list tên cột (not DataFrame )&lt;/li&gt;
+&lt;li&gt;Lấy riêng 1 cột (&lt;code&gt;df.select(&amp;quot;userID&amp;quot;).map(lambda x: x[0]).collect()&lt;/code&gt;) -&amp;gt; Trả về list userID (not RDD/Dataframe)&lt;/li&gt;
+&lt;li&gt;Lấy cột distinct, chỉ cần thêm .distinct()&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;print whole_log_df.columns
+#['access_time', 'userID', 'campaignID']
+
+print whole_log_df.select(&amp;quot;userID&amp;quot;).map(lambda x: x[0]).collect()[:5]
+#[144012, 24485, 24485, 24485, 24485]
+
+print whole_log_df.select(&amp;quot;userID&amp;quot;).distinct().map(lambda x:x[0]).collect()[:5]
+#[4831, 48631, 143031, 39631, 80831]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;7. Từ DataFrame , tạo RDD&lt;/h4&gt;
+&lt;p&gt;Có 2 cách chính là:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sử dụng &lt;code&gt;map()&lt;/code&gt; : mỗi hàng của DataFrame được chuyển sang RDD theo dạng list&lt;/li&gt;
+&lt;li&gt;Sử dụng &lt;code&gt;.rdd&lt;/code&gt;: mỗi hàng của DataFrame được chuyển sang RDD &lt;a href="https://spark.apache.org/docs/latest/api/python/pyspark.sql.html#pyspark.sql.Row"&gt;Row Object&lt;/a&gt; (Tức là mỗi hàng sẽ là 1 Object) Tiếp theo sử dụng &lt;code&gt;.asDict()&lt;/code&gt; với Row Object để chuyển về RDD Key-Value.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class="language-python"&gt;#convert to rdd by &amp;quot;.map&amp;quot;
+print whole_log_df.groupBy(&amp;quot;campaignID&amp;quot;).count().map(lambda x: [x[0], x[1]]).take(5)
+#[[u'Campaign033', 786], [u'Campaign034', 3867], [u'Campaign035', 963], [u'Campaign036', 1267], [u'Campaign037', 1010]]
+
+# rdd -&amp;gt; normal list can be done with &amp;quot;collect&amp;quot;.
+print whole_log_df.groupBy(&amp;quot;campaignID&amp;quot;).count().map(lambda x: [x[0], x[1]]).collect()[:5]
+#[[u'Campaign033', 786], [u'Campaign034', 3867], [u'Campaign035', 963], [u'Campaign036', 1267], [u'Campaign037', 1010]]
+
+#convert to rdd by &amp;quot;.rdd&amp;quot; will return &amp;quot;Row&amp;quot; object
+print whole_log_df.groupBy(&amp;quot;campaignID&amp;quot;).rdd.take(3)
+#[Row(campaignID=u'Campaign033', count=786), Row(campaignID=u'Campaign034', count=3867), Row(campaignID=u'Campaign035', count=963)]
+
+#`.asDict()` will convert to Key-Value RDD from Row object
+print whole_log_df.groupBy(&amp;quot;campaignID&amp;quot;).rdd.map(lambda x:x.asDict()).take(3)
+#[{'count': 786, 'campaignID': u'Campaign033'}, {'count': 3867, 'campaignID': u'Campaign034'}, {'count': 963, 'campaignID': u'Campaign035'}]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;IV. Tổng kết&lt;/h3&gt;
+Trên đây mình đã giới thiệu với các bạn những kiến thức cơ bản về Spark DataFrame, và tất nhiên là bạn có thể làm nhiều điều hơn(ngoài phạm vi bài viết này) với Spark DataFrame. Nhưng kiến thức cơ bản không bao giờ thừa phải không. 
+&lt;p&gt;Hẹn gặp lại các bạn ở các bài viết sau.&lt;/p&gt;
+&lt;/div&gt;</content:encoded></item></channel></rss>

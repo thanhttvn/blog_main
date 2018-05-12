@@ -1,0 +1,3 @@
+User-agent: *
+Sitemap: http://codetudau.com/sitemap.xml
+Disallow: /ghost/
